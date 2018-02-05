@@ -1,0 +1,97 @@
+.progtrckr-container {
+	box-sizing: border-box;
+	margin-bottom: 24px;
+}
+ol.progtrckr {
+	margin: 0;
+	margin-bottom: 1em;
+	padding: 0;
+	list-style-type: none;
+}
+ol.progtrckr li {
+	margin-left: 0;
+	margin-bottom: .5em;
+}
+ol.progtrckr li:before {
+	position: relative;
+	float: left;
+	line-height: 24px;
+	border-radius: 20px;
+	text-align: center;
+	margin-right: .6em;
+}
+ol.progtrckr li.progtrckr-done {
+	color: black;
+}
+ol.progtrckr li.progtrckr-done:before {
+	content: "\2713";
+	color: white;
+	height: 24px;
+	width: 24px;
+	background-color: yellowgreen;
+	border: none;
+}
+ol.progtrckr li.progtrckr-todo {
+	color: silver;
+}
+ol.progtrckr li.progtrckr-todo:before {
+	content: " ";
+	height: 24px;
+	width: 24px;
+	border: 3px solid silver;
+	background-color: white;
+}
+@media screen and (min-width: 600px), print {
+	ol.progtrckr.narrow {
+		margin-bottom: 1em;
+		list-style-type: none;
+		display: flex;
+		flex-wrap: wrap;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	ol.progtrckr.narrow li {
+		text-align: center;
+		flex: 1;
+		margin-bottom: 0;
+	}
+	ol.progtrckr.narrow li:before {
+		bottom: -13px;
+		float: right;
+		margin-right: 0;
+	}
+	ol.progtrckr.narrow li.progtrckr-done {
+		border-bottom: 4px solid yellowgreen;
+	}
+	ol.progtrckr.narrow li.progtrckr-todo {
+		border-bottom: 4px solid silver;
+	}
+}
+@media screen and (min-width: 800px), print {
+	ol.progtrckr {
+		margin-bottom: 1em;
+		list-style-type: none;
+		display: flex;
+		flex-wrap: wrap;
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	ol.progtrckr li {
+		text-align: center;
+		flex: 1;
+		margin-bottom: 0;
+	}
+	ol.progtrckr li:before {
+		bottom: -13px;
+		float: right;
+		margin-right: 0;
+	}
+	ol.progtrckr li.progtrckr-done {
+		border-bottom: 4px solid yellowgreen;
+	}
+	ol.progtrckr li.progtrckr-todo {
+		border-bottom: 4px solid silver;
+	}
+}
