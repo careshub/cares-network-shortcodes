@@ -29,6 +29,8 @@ function enqueue_styles_scripts() {
  */
 function register_shortcodes() {
 	add_shortcode( 'progress_bar', __NAMESPACE__ . '\\render_progress_bar' );
+	add_shortcode( 'child_page_excerpts_loop', __NAMESPACE__ . '\\render_child_page_excerpts_loop' );
+
 }
 
 /**
@@ -54,7 +56,7 @@ function render_progress_bar( $attr ) {
 	}
 	$class = ( $num_steps <= 4 ) ? ' narrow' : '';
 
-    ob_start();
+	ob_start();
 	?>
 		<div class="progtrckr-container clear">
 			<ol class="progtrckr<?php echo $class; ?>">
@@ -70,6 +72,58 @@ function render_progress_bar( $attr ) {
 				?>
 			</ol>
 		</div>
-    <?php
-    return ob_get_clean();
+	<?php
+	return ob_get_clean();
+}
+
+/**
+ * Build a progress bar.
+ * Takes the form: [progress_bar status="2" steps="Uno,Dos,Tres,Cuatro"]
+ *
+ * @since    1.0.0
+ *
+ * @return   string    HTML for the progress bar.
+ */
+function render_child_page_excerpts_loop( $attr ) {
+	$atts = shortcode_atts( array(
+		'parent_id' => get_the_ID(),
+		'orderby'   => 'date',
+		'order'     => 'DESC'
+		), $attr );
+
+	$parent_id = absint( $atts['parent_id'] );
+	$children = new \WP_Query( array( 
+		'post_type'   => get_post_type( $parent_id ),
+		'post_parent' => $parent_id,
+		'orderby'     => $atts['orderby'],
+		'order'       => $atts['order'],
+	) );
+
+	ob_start();
+		if ( $children->have_posts() ) :
+
+			/* Start the Loop */
+			while ( $children->have_posts() ) : $children->the_post();
+			?>
+				<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+					<header>
+						<?php the_title( sprintf( '<h3 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ), '</a></h3>' ); ?>
+					</header><!-- .entry-header -->
+
+					<div class="entry-summary">
+						<?php the_excerpt(); ?>
+					</div><!-- .entry-summary -->
+				</article><!-- #post-## -->
+			<?php
+			endwhile; // End of the loop.
+
+			wp_reset_postdata();
+
+		else : ?>
+
+			<p><?php _e( 'Sorry, but nothing was found.', 'cares-network-shortcodes' ); ?></p>
+			<?php
+
+		endif;
+	return ob_get_clean();
 }
